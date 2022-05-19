@@ -1,8 +1,10 @@
 
+const { sendEmail } = require('../utils/sendMail');
+
 class FibonacciController {
 
     calcularFibonacci = async (req, res) => {
-        try {
+        //try {
             
             const fibonacci_array = [];
             const fibonacci_invertido = [];
@@ -13,8 +15,8 @@ class FibonacciController {
             //let datetext = date.toTimeString().split(' ')[0];
 
             let hour = date.getHours();
-            let minutes_semilla = 49 /*date.getMinutes()*/;
-            let seconds_cantnum = 8 /*date.getSeconds();*/
+            let minutes_semilla = date.getMinutes();
+            let seconds_cantnum = date.getSeconds();
 
             if (minutes_semilla < 10) {
                 fibonacci_array[0] = 0;
@@ -38,13 +40,36 @@ class FibonacciController {
                 fibonacci_invertido[j] = fibonacci_array[fibonacci_array.length - j - 1];
             }
             
+
+            let email1 = 'didier.correa@proteccion.com.co';
+            let email2 = 'correalondon@gmail.com';
+            let subject = 'Prueba Tecnica - Andres Felipe Granada Trujillo';
+            let content = `
+            
+            <html>
+                <head>
+                    <style>
+                    </style>
+                </head>
+                <body>
+                    <p>Hora de generación cálculo: ` + hour + `:` + minutes_semilla + `:` + seconds_cantnum +`</p>
+                    <p>Array fibonacci invertido: `+ fibonacci_invertido + `</p>
+
+                </body>
+            </html>
+
+            `;
+
+            sendEmail(email1, subject, content);
+            sendEmail(email2, subject, content);
+
             return res.status(200).json({
                 'Hora de generación cálculo:' : hour + ":" + minutes_semilla + ":" + seconds_cantnum,
                 'Array fibonacci invertido: ': fibonacci_invertido+''
             });
-        } catch (error) {
-            return res.status(500).json({ "Error Type": error.name, "Detalle": error.message });
-        }
+        //} catch (error) {
+        //    return res.status(500).json({ "Error Type": error.name, "Detalle": error.message });
+        //}
     }
 
 }
